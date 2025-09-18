@@ -1,0 +1,146 @@
+<!-- Travel BlogHub Admin Dashboard -->
+<div class="admin-dashboard">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-section">
+        <div class="logo-icon">🌍</div>
+        <h2 class="logo">Travel BlogHub</h2>
+        <span class="admin-badge">Admin Panel</span>
+      </div>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a routerLink="/admin-dashboard" routerLinkActive="active">
+          <span class="nav-icon">📊</span>
+          <span class="nav-text">Dashboard</span>
+        </a></li>
+        <li><a routerLink="/manage-articles" routerLinkActive="active">
+          <span class="nav-icon">📝</span>
+          <span class="nav-text">Travel Articles</span>
+        </a></li>
+        <li><a routerLink="/manage-users" routerLinkActive="active">
+          <span class="nav-icon">👥</span>
+          <span class="nav-text">Travelers</span>
+        </a></li>
+        <li><a routerLink="/manage-likes" routerLinkActive="active">
+          <span class="nav-icon">❤️</span>
+          <span class="nav-text">Likes & Hearts</span>
+        </a></li>
+        <li><a routerLink="/manage-comments" routerLinkActive="active">
+          <span class="nav-icon">💬</span>
+          <span class="nav-text">Comments</span>
+        </a></li>
+        <li><a routerLink="/admin-settings" routerLinkActive="active">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-text">Settings</span>
+        </a></li>
+      </ul>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <div class="admin-profile">
+        <div class="admin-avatar">👨‍💼</div>
+        <div class="admin-info">
+          <span class="admin-name">Admin User</span>
+          <span class="admin-role">Super Admin</span>
+        </div>
+      </div>
+      <button class="logout-btn" (click)="logout()">
+        <span class="logout-icon">🚪</span>
+        <span class="logout-text">Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="dashboard-header">
+      <div class="header-left">
+        <h1>Admin Dashboard</h1>
+        <p class="header-subtitle">Manage your travel blog community</p>
+      </div>
+      <div class="header-right">
+        <div class="header-stats">
+          <span class="stat-item">
+            <span class="stat-number">2,547</span>
+            <span class="stat-label">Total Views</span>
+          </span>
+          <span class="stat-item">
+            <span class="stat-number">89</span>
+            <span class="stat-label">New Today</span>
+          </span>
+        </div>
+        <button class="notification-btn">
+          <span class="notification-icon">🔔</span>
+          <span class="notification-badge">3</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Summary Cards -->
+    <section class="stats-cards">
+      <div class="stat-card articles">
+        <div class="card-icon">📝</div>
+        <div class="card-content">
+          <h3>Travel Articles</h3>
+          <p class="card-number">247</p>
+          <span class="card-change positive">+12 this week</span>
+        </div>
+      </div>
+      <div class="stat-card users">
+        <div class="card-icon">👥</div>
+        <div class="card-content">
+          <h3>Active Travelers</h3>
+          <p class="card-number">1,234</p>
+          <span class="card-change positive">+45 this week</span>
+        </div>
+      </div>
+      <div class="stat-card likes">
+        <div class="card-icon">❤️</div>
+        <div class="card-content">
+          <h3>Total Hearts</h3>
+          <p class="card-number">8,456</p>
+          <span class="card-change positive">+234 this week</span>
+        </div>
+      </div>
+      <div class="stat-card comments">
+        <div class="card-icon">💬</div>
+        <div class="card-content">
+          <h3>Comments</h3>
+          <p class="card-number">1,567</p>
+          <span class="card-change positive">+67 this week</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Actions -->
+    <section class="quick-actions">
+      <h2>Quick Actions</h2>
+      <div class="action-buttons">
+        <button class="action-btn primary">
+          <span class="btn-icon">✍️</span>
+          <span class="btn-text">Create Article</span>
+        </button>
+        <button class="action-btn secondary">
+          <span class="btn-icon">👤</span>
+          <span class="btn-text">Add User</span>
+        </button>
+        <button class="action-btn tertiary">
+          <span class="btn-icon">📊</span>
+          <span class="btn-text">View Analytics</span>
+        </button>
+        <button class="action-btn quaternary">
+          <span class="btn-icon">🎨</span>
+          <span class="btn-text">Customize Theme</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Dynamic Pages -->
+    <section class="page-content">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+</div>

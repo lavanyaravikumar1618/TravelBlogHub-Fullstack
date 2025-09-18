@@ -1,0 +1,68 @@
+<div class="profile">
+  <div class="profile-header">
+    <h2>👤 Your Travel Profile</h2>
+    <p>Manage your travel preferences, achievements, and personal information</p>
+  </div>
+  
+  <div class="profile-content">
+    <div class="profile-card">
+      <div class="profile-avatar">
+        <div class="avatar" [style.background-image]="avatarImage ? 'url(' + avatarImage + ')' : 'none'">
+          <span *ngIf="!avatarImage">🌍</span>
+        </div>
+        <input type="file" id="avatar-upload" accept="image/*" (change)="onAvatarUpload($event)" style="display: none;">
+        <button class="change-avatar" (click)="triggerAvatarUpload()">Change Avatar</button>
+      </div>
+      
+      <div class="profile-info">
+        <h3>Travel Adventurer</h3>
+        <p class="member-since">Member since 2024</p>
+        
+        <div class="travel-stats">
+          <div class="stat">
+            <span class="number">12</span>
+            <span class="label">Countries Visited</span>
+          </div>
+          <div class="stat">
+            <span class="number">8</span>
+            <span class="label">Stories Published</span>
+          </div>
+          <div class="stat">
+            <span class="number">156</span>
+            <span class="label">Likes Received</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="profile-sections">
+      <div class="section">
+        <h4>🏆 Travel Achievements</h4>
+        <div class="achievements">
+          <div class="achievement">🌍 World Explorer</div>
+          <div class="achievement">✍️ Storyteller</div>
+          <div class="achievement">🎒 Solo Adventurer</div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h4>❤️ Favorite Destinations</h4>
+        <div class="destinations">
+          <span class="destination">🇯🇵 Japan</span>
+          <span class="destination">🇮🇸 Iceland</span>
+          <span class="destination">🇹🇭 Thailand</span>
+          <span class="destination">🇮🇹 Italy</span>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h4>⚙️ Account Settings</h4>
+        <div class="settings">
+          <button class="setting-btn">Edit Profile</button>
+          <button class="setting-btn">Privacy Settings</button>
+          <button class="setting-btn">Notification Preferences</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

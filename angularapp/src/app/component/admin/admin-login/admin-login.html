@@ -1,0 +1,62 @@
+<div class="admin-wrapper">
+  <!-- Top Bar -->
+  <header class="admin-header">
+    <h1 class="brand">Travel Blog Hub</h1>
+  </header>
+
+  <!-- Centered Login Card -->
+  <div class="admin-form-section">
+    <div class="admin-card">
+      <div class="logo-section">
+        <div class="logo-icon">🛠️</div>
+        <h2 class="title">Admin Login</h2>
+        <p class="subtitle">Sign in to manage your platform</p>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #adminForm="ngForm" class="login-form" novalidate>
+        <!-- Error Message -->
+        <div class="error-message" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Username -->
+        <div class="form-group">
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              [(ngModel)]="username"
+              required
+              placeholder="Username"
+            />
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              [(ngModel)]="password"
+              required
+              placeholder="Password"
+            />
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" [disabled]="!adminForm.form.valid || isLoading" class="btn-login">
+          <span class="btn-text" *ngIf="!isLoading">Login to Dashboard</span>
+          <span class="btn-text" *ngIf="isLoading">Signing In...</span>
+          <span class="btn-icon" *ngIf="!isLoading">➡️</span>
+          <span class="btn-icon" *ngIf="isLoading">⏳</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

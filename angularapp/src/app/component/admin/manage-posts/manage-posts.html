@@ -1,0 +1,33 @@
+<div class="container">
+  <h2>Manage Posts</h2>
+
+  <div class="add-post">
+    <input type="text" [(ngModel)]="newPost.title" placeholder="Post Title" />
+    <input type="text" [(ngModel)]="newPost.author" placeholder="Author Name" />
+    <textarea [(ngModel)]="newPost.content" placeholder="Post Content"></textarea>
+    <button (click)="addPost()">Add Post</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Content</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let post of posts">
+        <td>{{ post.id }}</td>
+        <td>{{ post.title }}</td>
+        <td>{{ post.author }}</td>
+        <td>{{ post.content }}</td>
+        <td>
+          <button (click)="deletePost(post.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

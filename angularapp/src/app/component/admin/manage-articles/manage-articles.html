@@ -1,0 +1,97 @@
+<div class="manage-articles">
+  <div class="page-header">
+    <div class="header-content">
+      <h1>📝 Manage Travel Articles</h1>
+      <p>Review, edit, and manage all travel stories and adventures</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-primary">
+        <span class="btn-icon">➕</span>
+        <span class="btn-text">Add New Article</span>
+      </button>
+      <button class="btn-secondary">
+        <span class="btn-icon">📊</span>
+        <span class="btn-text">Analytics</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="filters-section">
+    <div class="filter-group">
+      <label>Filter by Status:</label>
+      <select class="filter-select">
+        <option value="">All Articles</option>
+        <option value="published">Published</option>
+        <option value="draft">Draft</option>
+        <option value="pending">Pending Review</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Filter by Category:</label>
+      <select class="filter-select">
+        <option value="">All Categories</option>
+        <option value="adventure">Adventure</option>
+        <option value="budget">Budget Travel</option>
+        <option value="solo">Solo Travel</option>
+        <option value="family">Family Travel</option>
+      </select>
+    </div>
+    <div class="search-group">
+      <input type="text" placeholder="Search articles..." class="search-input">
+      <button class="search-btn">🔍</button>
+    </div>
+  </div>
+
+  <div class="articles-grid">
+    <div class="article-card" *ngFor="let a of articles">
+      <div class="article-image">
+        <div class="image-placeholder">📸</div>
+        <div class="article-status" [ngClass]="a.status.toLowerCase()">
+          {{a.status}}
+        </div>
+      </div>
+      <div class="article-content">
+        <h3 class="article-title">{{a.title}}</h3>
+        <div class="article-meta">
+          <span class="author">👤 {{a.author}}</span>
+          <span class="category">🏷️ {{a.category}}</span>
+          <span class="date">📅 2 days ago</span>
+        </div>
+        <div class="article-stats">
+          <div class="stat">
+            <span class="stat-icon">👁️</span>
+            <span class="stat-value">{{a.views}}</span>
+          </div>
+          <div class="stat">
+            <span class="stat-icon">❤️</span>
+            <span class="stat-value">{{a.likes}}</span>
+          </div>
+          <div class="stat">
+            <span class="stat-icon">💬</span>
+            <span class="stat-value">{{a.comments}}</span>
+          </div>
+        </div>
+        <div class="article-actions">
+          <button class="action-btn edit" (click)="editArticle(a)">
+            <span class="btn-icon">✏️</span>
+            <span class="btn-text">Edit</span>
+          </button>
+          <button class="action-btn toggle" (click)="toggleStatus(a)">
+            <span class="btn-icon">{{a.status === 'Published' ? '👁️‍🗨️' : '👁️'}}</span>
+            <span class="btn-text">{{a.status === 'Published' ? 'Unpublish' : 'Publish'}}</span>
+          </button>
+          <button class="action-btn delete" (click)="deleteArticle(a)">
+            <span class="btn-icon">🗑️</span>
+            <span class="btn-text">Delete</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <button class="page-btn">← Previous</button>
+    <span class="page-info">Page 1 of 5</span>
+    <button class="page-btn">Next →</button>
+  </div>
+</div>

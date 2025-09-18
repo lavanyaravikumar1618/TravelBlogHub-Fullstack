@@ -1,0 +1,66 @@
+<div class="explore">
+  <div class="explore-header">
+    <h2>🌍 Explore Travel Adventures</h2>
+    <p>Discover amazing travel stories, tips, and destinations from fellow adventurers</p>
+  </div>
+
+  <div class="article-list">
+    <div class="article-card" *ngFor="let article of articles">
+      <div class="article-header">
+        <span class="category">{{ article.category }}</span>
+        <span class="read-time">{{ article.readTime }}</span>
+      </div>
+      <h3>{{ article.title }}</h3>
+      <p class="author">By {{ article.author }}</p>
+      <p class="summary">{{ article.summary }}</p>
+        <div class="article-footer">
+          <div class="article-stats">
+            <div class="likes" (click)="likeArticle(article)">
+              <span class="heart">❤️</span>
+              <span>{{ article.likes }}</span>
+            </div>
+            <div class="comments" (click)="toggleComments(article)">
+              <span class="comment-icon">💬</span>
+              <span>{{ article.comments.length }}</span>
+            </div>
+          </div>
+          <button class="read-btn">Read Adventure →</button>
+        </div>
+        
+        <!-- Comments Section -->
+        <div class="comments-section" *ngIf="selectedArticle?.id === article.id && showComments">
+          <div class="comments-header">
+            <h4>Comments ({{ article.comments.length }})</h4>
+          </div>
+          
+          <div class="comments-list" *ngIf="article.comments.length > 0">
+            <div class="comment-item" *ngFor="let comment of article.comments">
+              <div class="comment-avatar">👤</div>
+              <div class="comment-content">
+                <div class="comment-header">
+                  <span class="comment-author">{{ comment.author }}</span>
+                  <span class="comment-date">{{ comment.date }}</span>
+                </div>
+                <p class="comment-text">{{ comment.text }}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="add-comment">
+            <div class="comment-input-group">
+              <input 
+                type="text" 
+                [(ngModel)]="newComment" 
+                placeholder="Share your thoughts..."
+                class="comment-input"
+                (keyup.enter)="addComment(article)"
+              >
+              <button class="comment-submit" (click)="addComment(article)">
+                <span class="submit-icon">📤</span>
+              </button>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

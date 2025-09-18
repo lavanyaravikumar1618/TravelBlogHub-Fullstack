@@ -1,0 +1,132 @@
+<div class="manage-comments">
+  <div class="page-header">
+    <div class="header-content">
+      <h1>💬 Manage Comments</h1>
+      <p>Review, approve, and moderate community comments</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-primary">
+        <span class="btn-icon">📊</span>
+        <span class="btn-text">Comment Analytics</span>
+      </button>
+      <button class="btn-secondary">
+        <span class="btn-icon">⚙️</span>
+        <span class="btn-text">Moderation Settings</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="filters-section">
+    <div class="filter-group">
+      <label>Filter by Status:</label>
+      <select class="filter-select" [(ngModel)]="statusFilter" (change)="filterComments()">
+        <option value="">All Comments</option>
+        <option value="approved">Approved</option>
+        <option value="pending">Pending</option>
+        <option value="flagged">Flagged</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Filter by Article:</label>
+      <select class="filter-select" [(ngModel)]="articleFilter" (change)="filterComments()">
+        <option value="">All Articles</option>
+        <option value="europe">Eastern Europe Adventure</option>
+        <option value="himalayas">Himalayan Trek</option>
+        <option value="southeast-asia">Southeast Asia</option>
+      </select>
+    </div>
+    <div class="search-group">
+      <input type="text" placeholder="Search comments..." class="search-input" [(ngModel)]="searchTerm" (input)="filterComments()">
+      <button class="search-btn">🔍</button>
+    </div>
+  </div>
+
+  <div class="comments-stats">
+    <div class="stat-card">
+      <div class="stat-icon">💬</div>
+      <div class="stat-content">
+        <h3>Total Comments</h3>
+        <p class="stat-number">{{ comments.length }}</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⏳</div>
+      <div class="stat-content">
+        <h3>Pending Review</h3>
+        <p class="stat-number">{{ getPendingCount() }}</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-content">
+        <h3>Approved</h3>
+        <p class="stat-number">{{ getApprovedCount() }}</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🚩</div>
+      <div class="stat-content">
+        <h3>Flagged</h3>
+        <p class="stat-number">{{ getFlaggedCount() }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="comments-list" *ngIf="filteredComments.length; else empty">
+    <div class="comment-card" *ngFor="let c of filteredComments | slice:(page-1)*limit:(page)*limit">
+      <div class="comment-header">
+        <div class="comment-author-info">
+          <div class="author-avatar">👤</div>
+          <div class="author-details">
+            <h4 class="author-name">{{ c.author }}</h4>
+            <span class="comment-date">{{ c.date }}</span>
+          </div>
+        </div>
+        <div class="comment-status" [ngClass]="c.status">
+          {{ c.status | titlecase }}
+        </div>
+      </div>
+      
+      <div class="comment-content">
+        <p class="comment-text">{{ c.content }}</p>
+        <div class="comment-meta">
+          <span class="article-link">📝 {{ c.articleTitle }}</span>
+          <span class="comment-id">ID: {{ c.id }}</span>
+        </div>
+      </div>
+      
+      <div class="comment-actions">
+        <button class="action-btn approve" (click)="approve(c)" [disabled]="c.status === 'approved'">
+          <span class="btn-icon">✅</span>
+          <span class="btn-text">Approve</span>
+        </button>
+        <button class="action-btn flag" (click)="flag(c)" [disabled]="c.status === 'flagged'">
+          <span class="btn-icon">🚩</span>
+          <span class="btn-text">Flag</span>
+        </button>
+        <button class="action-btn reply" (click)="reply(c)">
+          <span class="btn-icon">💬</span>
+          <span class="btn-text">Reply</span>
+        </button>
+        <button class="action-btn delete" (click)="delete(c)">
+          <span class="btn-icon">🗑️</span>
+          <span class="btn-text">Delete</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #empty>
+    <div class="empty-state">
+      <div class="empty-icon">💬</div>
+      <h3>No Comments Found</h3>
+      <p>No comments match your current filters.</p>
+    </div>
+  </ng-template>
+
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button class="page-btn" (click)="prevPage()" [disabled]="page === 1">← Previous</button>
+    <span class="page-info">Page {{ page }} of {{ totalPages }}</span>
+    <button class="page-btn" (click)="nextPage()" [disabled]="page >= totalPages">Next →</button>
+  </div>
+</div>

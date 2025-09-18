@@ -1,0 +1,25 @@
+<div class="settings-container">
+  <h2>Admin Settings</h2>
+  
+  <form (ngSubmit)="saveSettings()">
+    <div class="form-group">
+      <label for="title">Blog Title:</label>
+      <input type="text" id="title" [(ngModel)]="blogTitle" name="title" />
+    </div>
+
+    <div class="form-group">
+      <label for="desc">Description:</label>
+      <textarea id="desc" [(ngModel)]="description" name="desc"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="theme">Theme:</label>
+      <select id="theme" [(ngModel)]="theme" name="theme">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn-save">Save Settings</button>
+  </form>
+</div>

@@ -1,0 +1,87 @@
+<div class="write">
+  <div class="write-header">
+    <h2>✍️ Share Your Travel Story</h2>
+    <p>Inspire fellow travelers with your adventures, tips, and unforgettable experiences</p>
+  </div>
+  
+  <form (ngSubmit)="onSubmit()" #writeForm="ngForm" class="write-form">
+    <!-- Error Messages -->
+    <div class="error-message" *ngIf="submitError">
+      {{ submitError }}
+    </div>
+    
+    <div class="error-message" *ngIf="uploadError">
+      {{ uploadError }}
+    </div>
+
+    <div class="form-group">
+      <label for="title">Adventure Title *</label>
+      <input type="text" id="title" [(ngModel)]="title" name="title" required placeholder="e.g., Backpacking Through the Swiss Alps">
+    </div>
+    
+    <div class="form-group">
+      <label for="destination">Destination *</label>
+      <input type="text" id="destination" [(ngModel)]="destination" name="destination" required placeholder="e.g., Switzerland, Europe">
+    </div>
+    
+    <div class="form-group">
+      <label for="category">Travel Category *</label>
+      <select id="category" [(ngModel)]="category" name="category" required>
+        <option value="">Select a category</option>
+        <option value="adventure">Adventure</option>
+        <option value="budget">Budget Travel</option>
+        <option value="solo">Solo Travel</option>
+        <option value="family">Family Travel</option>
+        <option value="luxury">Luxury Travel</option>
+        <option value="cultural">Cultural</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="story">Your Travel Story *</label>
+      <textarea id="story" [(ngModel)]="story" name="story" rows="10" required placeholder="Share your amazing travel experience... What made it special? What tips would you give to other travelers?"></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label for="tips">Travel Tips</label>
+      <textarea id="tips" [(ngModel)]="tips" name="tips" rows="5" placeholder="Share practical tips: best time to visit, budget recommendations, must-see places, local customs..."></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label for="images">Upload Travel Photos</label>
+      <div class="image-upload">
+        <input type="file" id="images" multiple accept="image/*" (change)="onImageUpload($event)">
+        <div class="upload-area" (click)="triggerFileInput()" [class.uploading]="isUploading">
+          <div class="upload-icon" *ngIf="!isUploading">📸</div>
+          <div class="upload-icon" *ngIf="isUploading">⏳</div>
+          <p *ngIf="!isUploading">Click to upload travel photos</p>
+          <p *ngIf="isUploading">Uploading images...</p>
+          <small>Supports JPG, PNG, GIF (Max 5MB each)</small>
+        </div>
+        
+        <!-- Upload Progress -->
+        <div class="upload-progress" *ngIf="uploadProgress.length > 0">
+          <div class="progress-item" *ngFor="let progress of uploadProgress">
+            <span class="file-name">{{ progress.file.name }}</span>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="progress.progress"></div>
+            </div>
+            <span class="progress-text">{{ progress.progress | number:'1.0-0' }}%</span>
+          </div>
+        </div>
+        
+        <div class="uploaded-images" *ngIf="uploadedImages.length > 0">
+          <div class="image-preview" *ngFor="let image of uploadedImages; let i = index">
+            <img [src]="image.url" [alt]="image.name">
+            <button class="remove-image" (click)="removeImage(i)">×</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <button type="submit" class="publish-btn" [disabled]="!writeForm.form.valid || isSubmitting || isUploading">
+      <span *ngIf="!isSubmitting">Publish Adventure ✈️</span>
+      <span *ngIf="isSubmitting">Publishing...</span>
+    </button>
+  </form>
+</div>

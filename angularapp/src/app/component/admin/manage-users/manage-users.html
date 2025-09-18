@@ -1,0 +1,64 @@
+<div class="admin-panel">
+  <h2>👥 Manage Users</h2>
+
+  <!-- Search Bar -->
+  <div class="controls">
+    <input type="text" placeholder="🔍 Search by name or email" [(ngModel)]="search" (keyup.enter)="onSearch()" />
+    <button (click)="onSearch()">Search</button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrapper" *ngIf="!loading && users.length">
+    <table class="user-table">
+      <thead>
+        <tr>
+          <th>👤 Name</th>
+          <th>📧 Email</th>
+          <th>🎭 Role</th>
+          <th>⚡ Status</th>
+          <th>📝 Articles</th>
+          <th>👍 Likes</th>
+          <th>⚙ Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of users">
+          <td>{{u.name}}</td>
+          <td>{{u.email}}</td>
+          <td>
+            <select [value]="u.role" (change)="changeRole(u, $any($event.target).value)">
+              <option value="user">User</option>
+              <option value="editor">Editor</option>
+              <option value="admin">Admin</option>
+            </select>
+          </td>
+          <td>
+            <span class="badge" [ngClass]="u.isBanned ? 'banned' : 'active'">
+              {{u.isBanned ? 'Banned' : 'Active'}}
+            </span>
+          </td>
+          <td>{{u.articlesCount}}</td>
+          <td>{{u.likesCount}}</td>
+          <td>
+            <button class="ban" (click)="toggleBan(u)">
+              {{u.isBanned ? 'Unban' : 'Ban'}}
+            </button>
+            <button class="danger" (click)="deleteUser(u)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- No Users -->
+  <div *ngIf="!loading && !users.length" class="empty">
+    🚫 No users found.
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="total > limit">
+    <button (click)="prevPage()" [disabled]="page === 1">⬅ Previous</button>
+    <span>Page {{page}} — Total {{total}}</span>
+    <button (click)="nextPage()" [disabled]="page*limit >= total">Next ➡</button>
+  </div>
+</div>

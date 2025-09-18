@@ -1,0 +1,27 @@
+<div class="container">
+  <h2>Manage Categories</h2>
+
+  <div class="add-category">
+    <input type="text" [(ngModel)]="newCategory.name" placeholder="Category Name" />
+    <button (click)="addCategory()">Add Category</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Category Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let category of categories">
+        <td>{{ category.id }}</td>
+        <td>{{ category.name }}</td>
+        <td>
+          <button (click)="deleteCategory(category.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

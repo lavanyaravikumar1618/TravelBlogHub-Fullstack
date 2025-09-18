@@ -1,0 +1,36 @@
+<div class="likes-container">
+  <h2>Manage Likes</h2>
+
+  <table *ngIf="likes.length; else empty">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Article</th>
+        <th>User</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let like of likes | slice:(page-1)*limit:(page)*limit">
+        <td>{{like.id}}</td>
+        <td>{{like.article}}</td>
+        <td>{{like.user}}</td>
+        <td>{{like.date}}</td>
+        <td>
+          <button class="btn delete" (click)="removeLike(like)">Remove</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #empty>
+    <p>No likes available.</p>
+  </ng-template>
+
+  <div class="pagination" *ngIf="total > limit">
+    <button class="btn" (click)="prevPage()" [disabled]="page === 1">Previous</button>
+    <span>Page {{ page }} of {{ totalPages }}</span>
+    <button class="btn" (click)="nextPage()" [disabled]="page*limit >= total">Next</button>
+  </div>
+</div>

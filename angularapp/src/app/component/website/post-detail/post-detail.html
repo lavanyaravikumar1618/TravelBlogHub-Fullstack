@@ -1,0 +1,25 @@
+<div class="container" *ngIf="post">
+  <h2>{{ post.title }}</h2>
+  <div class="post-meta">
+    <span>By {{ post.author }}</span>
+    <span>{{ post.date }}</span>
+  </div>
+  <p>{{ post.content }}</p>
+
+  <div class="post-actions">
+    <button (click)="addLike()">👍 Like {{ likes }}</button>
+  </div>
+
+  <hr>
+  <h3>Comments</h3>
+
+  <div class="comment-list" *ngIf="comments.length > 0">
+    <div class="comment" *ngFor="let comment of comments">{{ comment }}</div>
+  </div>
+  <div *ngIf="comments.length === 0" class="no-comment">No comments yet.</div>
+
+  <div class="add-comment">
+    <input type="text" [(ngModel)]="newComment" placeholder="Write a comment..." />
+    <button (click)="addComment()">Add Comment</button>
+  </div>
+</div>
