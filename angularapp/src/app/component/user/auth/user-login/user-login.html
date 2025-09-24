@@ -1,14 +1,13 @@
 <div class="login-wrapper">
+  <!-- LEFT COLUMN: Login Form -->
   <div class="login-form-section">
     <div class="login-card">
       <div class="logo-section">
-        
-        <h1 class="title">Login Page🌍</h1>
-        <h1 class="title">Travel BlogHub</h1>
+        <div class="logo-icon">🌍</div>
+        <h1 class="title">Login Page</h1>
+        <h2 class="title">Travel BlogHub</h2>
         <p class="subtitle">Welcome back, Adventurer!</p>
       </div>
-
-      
 
       <form (ngSubmit)="onLogin()" #loginForm="ngForm" class="login-form">
         <!-- Error Message -->
@@ -32,11 +31,8 @@
 
         <div class="form-options">
           <label class="remember-me">
-            <input type="checkbox">
-            <span class="checkmark"></span>
-            Remember me
+            <input type="checkbox"> Remember me
           </label>
-          <!-- Routed forgot-password link -->
           <a routerLink="/forgot-password" class="forgot-password">Forgot Password?</a>
         </div>
 
@@ -48,11 +44,12 @@
         </button>
       </form>
 
-      <!-- Removed divider + social login -->
-
       <div class="login-links">
         <p>New to Travel BlogHub? <a routerLink="/register" class="register-link">Create Account</a></p>
       </div>
     </div>
   </div>
+
+  <!-- RIGHT COLUMN: Image only -->
+  <div class="login-image"></div>
 </div>

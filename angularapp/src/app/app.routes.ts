@@ -18,15 +18,18 @@ import { ForgotPasswordComponent } from './component/user/auth/forgot-password/f
 import { UserDashboardComponent } from './component/user/auth/user-dashboard/user-dashboard';
 
 // ---------------- User Pages (children of user-dashboard) ----------------
+// NOTE: HomeComponent is intentionally NOT used as the default child anymore.
+// If you still need HomeComponent later, you can keep it and add a route for it explicitly.
+
 import { HomeComponent } from './component/user/auth/user-dashboard/home/home';
 import { ExploreComponent } from './component/user/auth/user-dashboard/explore/explore';
 import { Write } from './component/user/auth/user-dashboard/write/write';
 import { About } from './component/user/auth/user-dashboard/about/about';
 import { Profile } from './component/user/auth/user-dashboard/profile/profile';
 
+
 export const routes: Routes = [
   // ---------------- Default ----------------
-  { path: '', redirectTo: 'user-login', pathMatch: 'full' },
 
   // ---------------- User Authentication ----------------
   { path: 'user-login', component: UserLoginComponent },
@@ -36,16 +39,19 @@ export const routes: Routes = [
 
   // ---------------- User Dashboard ----------------
   {
-    path: 'user-dashboard',
-    component: UserDashboardComponent,
-    children: [
-      { path: '', component: HomeComponent }, // default child
-      { path: 'explore', component: ExploreComponent },
-      { path: 'write', component: Write },
-      { path: 'about', component: About },
-      { path: 'profile', component: Profile }
-    ]
-  },
+  
+  path: 'user-dashboard',
+  component: UserDashboardComponent,
+  children: [
+    { path: '', component: HomeComponent }, // default when visiting /user-dashboard
+    { path: 'home', component: HomeComponent }, // explicit /user-dashboard/home
+    { path: 'explore', component: ExploreComponent },
+    { path: 'write', component: Write },
+    { path: 'about', component: About },
+    { path: 'profile', component: Profile }
+  ]
+},
+
 
   // ---------------- Admin Authentication ----------------
   { path: 'admin-login', component: AdminLoginComponent },
@@ -60,5 +66,5 @@ export const routes: Routes = [
   { path: 'admin-settings', component: AdminSettingsComponent },
 
   // ---------------- Fallback ----------------
-  { path: '**', redirectTo: 'user-login' }
+  { path: '**', redirectTo: '' } // fallback to Welcome
 ];

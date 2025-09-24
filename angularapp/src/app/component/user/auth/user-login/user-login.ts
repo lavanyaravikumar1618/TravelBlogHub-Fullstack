@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { finalize, take } from 'rxjs/operators';
 import { AuthService } from '../../../../service/auth.service';
 
 @Component({
@@ -22,30 +23,54 @@ export class UserLoginComponent {
     private authService: AuthService
   ) {}
 
-  onLogin() {
+  onLogin(): void {
+    this.errorMessage = '';
+
     if (!this.email || !this.password) {
       this.errorMessage = 'Please fill in all fields';
       return;
     }
 
     this.isLoading = true;
-    this.errorMessage = '';
 
-    this.authService.login(this.email, this.password).subscribe({
-      next: (success) => {
-        this.isLoading = false;
-        if (success) {
-          alert('Login Successful! Welcome back!');
-          this.router.navigate(['/user-dashboard']);
-        } else {
-          this.errorMessage = 'Invalid email or password';
+    this.authService.login(this.email, this.password)
+      .pipe(
+        take(1),
+        finalize(() => {
+          // ensure loading state is reset even if error occurs
+          this.isLoading = false;
+        })
+      )
+      .subscribe({
+        next: (success: boolean) => {
+          if (success) {
+            // replace with real toast if you have one
+            alert('Login Successful! Welcome back!');
+            this.router.navigate(['/user-dashboard']);
+          } else {
+            this.handleLoginFailure('Invalid email or password');
+          }
+        },
+        error: (err) => {
+          console.error('Login error:', err);
+          this.handleLoginFailure('Login failed. Please try again.');
         }
-      },
-      error: (error) => {
-        this.isLoading = false;
-        this.errorMessage = 'Login failed. Please try again.';
-        console.error('Login error:', error);
-      }
-    });
+      });
+  }
+
+  private handleLoginFailure(message: string) {
+    this.errorMessage = message;
+    // clear sensitive field to encourage re-entry
+    this.password = '';
+    // optionally set focus back to password or email input via ViewChild (not included here)
+  }
+
+  // small helpers used by template links (if you wire buttons instead of routerLink)
+  goToRegister(): void {
+    this.router.navigate(['/register']);
+  }
+
+  goToForgotPassword(): void {
+    this.router.navigate(['/forgot-password']);
   }
 }

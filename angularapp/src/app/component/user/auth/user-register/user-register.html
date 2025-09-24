@@ -1,100 +1,148 @@
-<div class="register-wrapper">
-  <div class="register-form-section">
-    <div class="register-card">
-      <div class="logo-section">
-        <div class="logo-icon">🌍</div>
-        <h1 class="title">Join Travel BlogHub</h1>
-        <p class="subtitle">Start your adventure today!</p>
-      </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Register — Travel Blog Hub</title>
 
-      <form (ngSubmit)="onRegister()" #registerForm="ngForm" class="register-form">
-        <!-- Error Message -->
-        <div class="error-message" *ngIf="errorMessage">
-          {{ errorMessage }}
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Link to CSS -->
+  <link rel="stylesheet" href="user-register.css">
+</head>
+<body>
+  <div class="register-wrapper">
+    <!-- LEFT: Animated Welcome -->
+    <aside class="welcome-panel" aria-hidden="false">
+      <div class="welcome-inner" role="img" aria-label="Welcome to Travel Blog Hub">
+        <div class="welcome-slide slide-1" aria-hidden="true">
+          <div class="emoji">🌍✈️🧳</div>
+          <div class="brand-a">
+            WELCOME TO<br><span>TRAVEL BLOG HUB</span>
+          </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <div class="input-wrapper">
-              <span class="input-icon">👤</span>
-              <input type="text" id="firstName" name="firstName" [(ngModel)]="firstName" required placeholder="First Name">
+        <div class="welcome-slide slide-2" aria-hidden="true">
+          <div class="brand-b">
+            WELCOME TO TRAVEL BLOG HUB
+          </div>
+        </div>
+
+        <div class="welcome-slide slide-3" aria-hidden="true">
+          <div class="brand-c">
+            WELCOME TO TRAVEL BLOG HUB
+          </div>
+        </div>
+
+        <div class="welcome-slide slide-4" aria-hidden="true">
+          <div class="emoji-large">✈️🌍</div>
+          <div class="brand-d">
+            WELCOME TO<br><span>TRAVEL BLOG HUB</span>
+          </div>
+        </div>
+
+        <div class="welcome-slide slide-5" aria-hidden="true">
+          <div class="brand-e">WELCOME TO</div>
+          <div class="brand-e-big">TRAVEL BLOG HUB</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT: Form Section -->
+    <main class="register-form-section">
+      <div class="register-card">
+        <div class="logo-section">
+          <div class="logo-icon">🌍</div>
+          <h1 class="title">Join Travel BlogHub</h1>
+          <p class="subtitle">Start your adventure today!</p>
+        </div>
+
+        <form (ngSubmit)="onRegister()" #registerForm="ngForm" class="register-form" novalidate>
+          <div class="error-message" *ngIf="errorMessage">
+            {{ errorMessage }}
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <div class="input-wrapper">
+                <span class="input-icon">👤</span>
+                <input type="text" id="firstName" name="firstName" [(ngModel)]="firstName" required placeholder="First Name">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-wrapper">
+                <span class="input-icon">👤</span>
+                <input type="text" id="lastName" name="lastName" [(ngModel)]="lastName" required placeholder="Last Name">
+              </div>
             </div>
           </div>
+
           <div class="form-group">
             <div class="input-wrapper">
-              <span class="input-icon">👤</span>
-              <input type="text" id="lastName" name="lastName" [(ngModel)]="lastName" required placeholder="Last Name">
+              <span class="input-icon">📧</span>
+              <input type="email" id="email" name="email" [(ngModel)]="email" required placeholder="Email Address">
             </div>
           </div>
-        </div>
 
-        <div class="form-group">
-          <div class="input-wrapper">
-            <span class="input-icon">📧</span>
-            <input type="email" id="email" name="email" [(ngModel)]="email" required placeholder="Email Address">
+          <div class="form-group">
+            <div class="input-wrapper">
+              <span class="input-icon">🌍</span>
+              <select id="country" name="country" [(ngModel)]="country" required class="country-select">
+                <option value="">Select Country</option>
+                <option value="US">United States</option>
+                <option value="UK">United Kingdom</option>
+                <option value="CA">Canada</option>
+                <option value="AU">Australia</option>
+                <option value="IN">India</option>
+                <option value="JP">Japan</option>
+                <option value="FR">France</option>
+                <option value="DE">Germany</option>
+                <option value="IT">Italy</option>
+                <option value="ES">Spain</option>
+              </select>
+            </div>
           </div>
-        </div>
 
-        <div class="form-group">
-          <div class="input-wrapper">
-            <span class="input-icon">🌍</span>
-            <select id="country" name="country" [(ngModel)]="country" required class="country-select">
-              <option value="">Select Country</option>
-              <option value="US">United States</option>
-              <option value="UK">United Kingdom</option>
-              <option value="CA">Canada</option>
-              <option value="AU">Australia</option>
-              <option value="IN">India</option>
-              <option value="JP">Japan</option>
-              <option value="FR">France</option>
-              <option value="DE">Germany</option>
-              <option value="IT">Italy</option>
-              <option value="ES">Spain</option>
-            </select>
+          <div class="form-group">
+            <div class="input-wrapper">
+              <span class="input-icon">🔒</span>
+              <input type="password" id="password" name="password" [(ngModel)]="password" required placeholder="Create Password">
+            </div>
           </div>
-        </div>
 
-        <div class="form-group">
-          <div class="input-wrapper">
-            <span class="input-icon">🔒</span>
-            <input type="password" id="password" name="password" [(ngModel)]="password" required placeholder="Create Password">
+          <div class="form-group">
+            <div class="input-wrapper">
+              <span class="input-icon">🔒</span>
+              <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="confirmPassword" required placeholder="Confirm Password">
+            </div>
           </div>
-        </div>
 
-        <div class="form-group">
-          <div class="input-wrapper">
-            <span class="input-icon">🔒</span>
-            <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="confirmPassword" required placeholder="Confirm Password">
+          <!-- Checkbox block: grouped for spacing -->
+          <div class="form-options checkbox-block">
+            <label class="terms-checkbox">
+              <input type="checkbox" [(ngModel)]="agreeTerms" name="agreeTerms" required>
+              <span>I agree to the <a href="#" class="terms-link">Terms of Service</a> and <a href="#" class="terms-link">Privacy Policy</a></span>
+            </label>
+
+            <label class="newsletter-checkbox">
+              <input type="checkbox" [(ngModel)]="newsletter" name="newsletter">
+              <span>Subscribe to travel tips and destination updates</span>
+            </label>
           </div>
+
+          <button type="submit" [disabled]="!registerForm.form.valid || isLoading" class="btn-register">
+            <span class="btn-text" *ngIf="!isLoading">Create My Account</span>
+            <span class="btn-text" *ngIf="isLoading">Creating Account...</span>
+            <span class="btn-icon" *ngIf="!isLoading">🚀</span>
+            <span class="btn-icon" *ngIf="isLoading">⏳</span>
+          </button>
+        </form>
+
+        <div class="register-links">
+          <p>Already have an account? <a routerLink="/login" class="login-link">Sign In</a></p>
         </div>
-
-        <div class="form-options">
-          <label class="terms-checkbox">
-            <input type="checkbox" [(ngModel)]="agreeTerms" name="agreeTerms" required>
-            <span class="checkmark"></span>
-            I agree to the <a href="#" class="terms-link">Terms of Service</a> and <a href="#" class="terms-link">Privacy Policy</a>
-          </label>
-        </div>
-
-        <div class="form-options">
-          <label class="newsletter-checkbox">
-            <input type="checkbox" [(ngModel)]="newsletter" name="newsletter">
-            <span class="checkmark"></span>
-            Subscribe to travel tips and destination updates
-          </label>
-        </div>
-
-        <button type="submit" [disabled]="!registerForm.form.valid || isLoading" class="btn-register">
-          <span class="btn-text" *ngIf="!isLoading">Create My Account</span>
-          <span class="btn-text" *ngIf="isLoading">Creating Account...</span>
-          <span class="btn-icon" *ngIf="!isLoading">🚀</span>
-          <span class="btn-icon" *ngIf="isLoading">⏳</span>
-        </button>
-      </form>
-
-      <div class="register-links">
-        <p>Already have an account? <a routerLink="/login" class="login-link">Sign In</a></p>
       </div>
-    </div>
+    </main>
   </div>
-</div>
+</body>
+</html>

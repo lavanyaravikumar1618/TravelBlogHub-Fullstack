@@ -1,285 +1,301 @@
-/* Overall Page */
+/* ---------- Global / Base ---------- */
+* { box-sizing: border-box; }
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #0f172a;
+  background: #ffffff;
+}
+
+/* layout container */
 .register-wrapper {
   min-height: 100vh;
   display: flex;
-  justify-content: center;
+  gap: 0;
+  align-items: stretch;
+}
+
+/* ---------- LEFT: Welcome panel ---------- */
+.welcome-panel {
+  flex: 1;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  display: flex;
   align-items: center;
-  background: #f5f5f5; /* plain background */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding: 20px;
-}
-
-/* Form Section */
-.register-form-section {
-  width: 100%;
-  max-width: 500px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  justify-content: center;
   padding: 40px;
+  border-radius: 8px 0 0 8px;
+  overflow: hidden;
 }
 
-/* Error Message */
-.error-message {
-  background: #fee;
-  color: #c33;
-  padding: 12px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  border: 1px solid #fcc;
-  font-size: 14px;
+.welcome-inner {
+  width: 100%;
+  max-width: 700px;
+  height: 360px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- Slides common ---------- */
+.welcome-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   text-align: center;
+  opacity: 0;
+  transform: translateY(8px) scale(0.99);
+  animation: slideCycle 20s linear infinite;
+  font-family: 'Poppins', sans-serif; /* enforce Poppins */
+}
+
+/* stagger timing for five slides */
+.welcome-slide.slide-1 { animation-delay: 0s; }
+.welcome-slide.slide-2 { animation-delay: 4s; }
+.welcome-slide.slide-3 { animation-delay: 8s; }
+.welcome-slide.slide-4 { animation-delay: 12s; }
+.welcome-slide.slide-5 { animation-delay: 16s; }
+
+/* fade/hold/fade keyframes */
+@keyframes slideCycle {
+  0%   { opacity: 0; transform: translateY(8px) scale(.99); }
+  5%   { opacity: 1; transform: translateY(0) scale(1); }
+  20%  { opacity: 1; transform: translateY(0) scale(1); }
+  25%  { opacity: 0; transform: translateY(-8px) scale(.99); }
+  100% { opacity: 0; transform: translateY(-8px) scale(.99); }
+}
+
+/* ---------- STYLE 1: Big uppercase gradient (slide-1) ---------- */
+.slide-1 .emoji { font-size: 2.0rem; margin-bottom: 10px; }
+.slide-1 .brand-a {
+  font-size: 2rem;
+  font-weight: 600;
+  color: rgba(20,24,36,0.75);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.slide-1 .brand-a span {
+  display:block;
+  font-size: 3.0rem;
+  font-weight: 800;
+  background: linear-gradient(90deg,#ffd86f,#fc6262);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 3px;
+}
+
+/* ---------- STYLE 2: Pill badge (slide-2) ---------- */
+.slide-2 .brand-b {
+  font-size: 1.9rem;
+  font-weight: 700;
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: linear-gradient(90deg,#4ade80,#38bdf8);
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(56,189,248,0.12), inset 0 -6px 18px rgba(0,0,0,0.06);
+  letter-spacing: 1px;
+}
+
+/* ---------- STYLE 3: Modern gradient headline (slide-3) ---------- */
+.slide-3 .brand-c {
+  font-size: 2.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(90deg, #0f172a 0%, #06b6d4 60%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 8px 24px rgba(12, 32, 63, 0.08);
+}
+
+/* ---------- STYLE 4: Neon glow (slide-4) ---------- */
+.slide-4 .emoji-large { font-size: 2.6rem; margin-bottom: 8px; opacity: 0.95; }
+.slide-4 .brand-d {
+  font-size: 2.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  background: linear-gradient(90deg,#06b6d4,#7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+    0 0 8px rgba(124,58,237,0.28),
+    0 0 20px rgba(6,182,212,0.12),
+    0 8px 30px rgba(12,74,110,0.06);
+}
+
+/* ---------- STYLE 5: Elegant pastel (slide-5) ---------- */
+.slide-5 .brand-e {
+  font-size: 1.2rem;
+  color: rgba(20,24,36,0.65);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.slide-5 .brand-e-big {
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(90deg,#ffb6c1,#bde0fe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 1.6px;
+}
+
+/* ---------- RIGHT: Form Section ---------- */
+.register-form-section {
+  flex: 1;
+  max-width: 620px;
+  background: #fff;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 0 6px 22px rgba(16,24,40,0.06);
+  padding: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif; /* enforce Poppins here too */
 }
 
 .register-card {
   width: 100%;
-  max-width: 500px;
+  max-width: 520px;
 }
 
-/* Logo Section */
-.logo-section {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.logo-icon {
-  font-size: 3.5rem;
-  margin-bottom: 15px;
-}
-
+/* Logo and heading - same font */
+.logo-section { text-align: center; margin-bottom: 26px; }
+.logo-icon { font-size: 3.2rem; margin-bottom: 8px; }
 .title {
-  font-size: 2.2rem;
+  font-size: 1.9rem;
+  margin: 0;
   font-weight: 700;
-  color: #2c3e50;
-  margin-bottom: 10px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg,#667eea,#764ba2);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
+}
+.subtitle { color: #6b7280; margin-top: 6px; font-weight: 500; }
+
+/* ---------- Form Basics (all form text uses Poppins) ---------- */
+.register-form { width: 100%; margin-top: 6px; }
+.form-row { display: flex; gap: 14px; }
+.form-group { flex: 1; margin-bottom: 16px; }
+.input-wrapper { position: relative; }
+.input-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; }
+
+/* inputs, selects, buttons use same font */
+input, select, textarea, button {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  color: #0f172a;
 }
 
-.subtitle {
-  font-size: 1rem;
-  color: #7f8c8d;
-  font-weight: 500;
-}
-
-/* Form Styles */
-.register-form {
-  margin-bottom: 25px;
-}
-
-.form-row {
-  display: flex;
-  gap: 15px;
-}
-
-.form-group {
-  margin-bottom: 20px;
-  flex: 1;
-}
-
-.input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.input-icon {
-  position: absolute;
-  left: 15px;
-  font-size: 1.1rem;
-  color: #7f8c8d;
-  z-index: 2;
-}
-
+/* input/select styles */
 .input-wrapper input,
 .input-wrapper select {
   width: 100%;
-  padding: 12px 12px 12px 45px;
-  border: 2px solid #e9ecef;
+  padding: 12px 14px 12px 44px;
   border-radius: 10px;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  background: #f8f9fa;
+  border: 1.5px solid #e6eef8;
+  background: #fbfdff;
+  box-sizing: border-box;
 }
-
 .input-wrapper input:focus,
 .input-wrapper select:focus {
   outline: none;
+  box-shadow: 0 6px 18px rgba(102,126,234,0.06);
   border-color: #667eea;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-/* Form Options */
-.form-options {
-  margin-bottom: 20px;
+/* ---------- Checkbox / Spacing improvements (NEW) ---------- */
+/* group container for checkbox block — gives consistent spacing below inputs */
+.checkbox-block {
+  margin-top: 8px;
+  margin-bottom: 28px; /* space below checkbox group to separate from button */
+  padding: 6px 0;
 }
 
+/* make labels row-based with larger clickable area */
 .terms-checkbox,
 .newsletter-checkbox {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  gap: 10px;           /* space between checkbox and label text */
   cursor: pointer;
-  font-size: 0.9rem;
-  color: #6c757d;
+  font-size: 0.95rem;
+  color: #475569;
+  margin-bottom: 8px;  /* small gap between stacked checkboxes */
   line-height: 1.4;
 }
 
+/* enlarge native checkbox control for easier clicking */
 .terms-checkbox input,
 .newsletter-checkbox input {
-  margin-right: 10px;
-  margin-top: 2px;
+  width: 18px;
+  height: 18px;
+  margin: 0;
 }
 
-.terms-link {
-  color: #667eea;
+/* link styles inside checkbox labels */
+.terms-checkbox a,
+.newsletter-checkbox a {
+  color: #3b82f6;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
 }
 
-.terms-link:hover {
-  text-decoration: underline;
-}
-
-/* Register Button */
+/* ---------- Button spacing & styles ---------- */
+/* extra breathing room before the submit button */
 .btn-register {
+  margin-top: 12px;
   width: 100%;
-  padding: 15px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  border: none;
+  padding: 13px;
   border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 600;
+  border: none;
+  font-weight: 700;
+  font-size: 1.02rem;
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  color: white;
   cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-  margin-bottom: 25px;
+  box-shadow: 0 10px 30px rgba(102,126,234,0.18);
+  font-family: 'Poppins', sans-serif;
 }
+.btn-register:disabled { opacity: 0.65; cursor: not-allowed; transform: none; box-shadow: none; }
 
-.btn-register:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
-}
-
-.btn-register:disabled {
-  background: #6c757d;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-.btn-icon {
-  font-size: 1.2rem;
-}
-
-/* Divider */
-.divider {
-  text-align: center;
-  margin: 25px 0;
-  position: relative;
-  color: #6c757d;
-  font-size: 0.9rem;
-}
-
-.divider::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: #e9ecef;
-  z-index: 1;
-}
-
-.divider span {
-  background: white;
-  padding: 0 20px;
-  position: relative;
-  z-index: 2;
-}
-
-/* Social Login */
-.social-login {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 25px;
-}
-
-.social-btn {
-  flex: 1;
-  padding: 12px;
-  border: 2px solid #e9ecef;
-  border-radius: 10px;
-  background: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-weight: 500;
-  color: #495057;
-}
-
-.social-btn:hover {
-  border-color: #667eea;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.social-icon {
-  font-size: 1.1rem;
-}
-
-/* Links */
-.register-links {
+/* misc */
+.error-message {
+  background: #fff4f6;
+  color: #9b1230;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ffe4e6;
+  margin-bottom: 12px;
   text-align: center;
 }
+.register-links { text-align: center; margin-top: 8px; color: #6366f1; }
 
-.register-links p {
-  color: #6c757d;
-  font-size: 0.95rem;
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+  .welcome-inner { height: 280px; }
+  .slide-1 .brand-a span { font-size: 2.4rem; }
+  .slide-3 .brand-c { font-size: 2.0rem; }
+  .slide-4 .brand-d { font-size: 2.2rem; }
+  .slide-5 .brand-e-big { font-size: 2.0rem; }
 }
 
-.login-link {
-  color: #667eea;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.login-link:hover {
-  text-decoration: underline;
-}
-
-/* Responsive Design */
 @media (max-width: 768px) {
-  .register-wrapper {
-    flex-direction: column;
-  }
-  
-  .register-form-section {
-    width: 100%;
-    padding: 20px;
-  }
-  
-  .title {
-    font-size: 1.8rem;
-  }
-  
-  .form-row {
-    flex-direction: column;
-    gap: 0;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
+  .register-wrapper { flex-direction: column; }
+  .welcome-panel { order: 0; width: 100%; height: auto; padding: 22px; border-radius: 8px 8px 0 0; }
+  .welcome-inner { height: 160px; max-width: 100%; }
+  .register-form-section { order: 1; width: 100%; max-width: 100%; border-radius: 0 0 8px 8px; padding: 20px; box-shadow: none; }
+  /* To hide the welcome panel on very small screens uncomment the next line: */
+  /* .welcome-panel { display: none; } */
 }

@@ -1,194 +1,175 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { UploadService, UploadProgress } from '../../../../../service/upload.service';
-import { PostService } from '../../../../../service/post.service';
-import { Post } from '../../../../../model/post.model';
-import { Subscription } from 'rxjs';
+
+interface UploadedImage {
+  name: string;
+  url: string;
+  file?: File;
+}
+
+interface UploadProgress {
+  file: File;
+  progress: number; // 0-100
+}
 
 @Component({
   selector: 'app-write',
-  standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  standalone: true,                 // make standalone so we can import modules directly
+  imports: [CommonModule, FormsModule], // gives *ngIf, *ngFor, ngModel, number pipe, ngForm, etc.
   templateUrl: './write.html',
-  styleUrl: './write.css'
+  styleUrls: ['./write.css']
 })
-export class Write implements OnInit, OnDestroy {
-  // Form data
-  title: string = '';
-  destination: string = '';
-  category: string = '';
-  story: string = '';
-  tips: string = '';
-  
-  // Image upload
-  uploadedImages: { name: string; url: string; file: File }[] = [];
+export class Write {
+  // Template-driven model properties
+  title = '';
+  destination = '';
+  category = '';
+  story = '';
+  tips = '';
+
+  // state
+  submitError = '';
+  uploadError = '';
+  isUploading = false;
+  isSubmitting = false;
+
+  // uploaded previews and progress
+  uploadedImages: UploadedImage[] = [];
   uploadProgress: UploadProgress[] = [];
-  isUploading: boolean = false;
-  uploadError: string = '';
-  
-  // Form state
-  isSubmitting: boolean = false;
-  submitError: string = '';
-  
-  private uploadSubscription?: Subscription;
 
-  constructor(
-    private uploadService: UploadService,
-    private postService: PostService
-  ) {}
+  // categories (if you want to render dynamically)
+  categories = [
+    { value: '', label: 'Select a category' },
+    { value: 'adventure', label: 'Adventure' },
+    { value: 'budget', label: 'Budget Travel' },
+    { value: 'solo', label: 'Solo Travel' },
+    { value: 'family', label: 'Family Travel' },
+    { value: 'luxury', label: 'Luxury Travel' },
+    { value: 'cultural', label: 'Cultural' }
+  ];
 
-  ngOnInit(): void {
-    // Subscribe to upload progress
-    this.uploadService.uploadProgress$.subscribe((progress: UploadProgress[]) => {
-      this.uploadProgress = progress;
-      this.isUploading = progress.some((p: UploadProgress) => p.status === 'uploading');
+  // Trigger hidden file input click
+  triggerFileInput() {
+    const input = document.getElementById('images') as HTMLInputElement | null;
+    input?.click();
+  }
+
+  // When user selects files via input
+  onImageUpload(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const files = input.files ? Array.from(input.files) : [];
+    if (!files.length) return;
+    this.addFiles(files);
+    input.value = ''; // reset so same file can be selected again
+  }
+
+  // Add files -> create previews and start simulated upload
+  addFiles(files: File[]) {
+    const valid: File[] = [];
+    for (const f of files) {
+      if (!f.type.startsWith('image/')) continue;
+      if (f.size > 5 * 1024 * 1024) {
+        // skip large files; optionally show error
+        this.uploadError = `File "${f.name}" is larger than 5MB and was skipped.`;
+        continue;
+      }
+      valid.push(f);
+    }
+    if (!valid.length) return;
+
+    this.isUploading = true;
+    for (const f of valid) {
+      const url = URL.createObjectURL(f);
+      this.uploadedImages.push({ name: f.name, url, file: f });
+      this.uploadProgress.push({ file: f, progress: 0 });
+    }
+    // simulate upload for each
+    this.simulateAllUploads().then(() => {
+      this.isUploading = false;
+      this.uploadError = '';
+    }).catch(err => {
+      console.error(err);
+      this.isUploading = false;
+      this.uploadError = 'Upload failed. Try again.';
     });
   }
 
-  ngOnDestroy(): void {
-    if (this.uploadSubscription) {
-      this.uploadSubscription.unsubscribe();
+  // Simulate upload progress for each file (replace with real API later)
+  private async simulateAllUploads() {
+    const tasks = this.uploadProgress.map(p => this.simulateProgress(p));
+    await Promise.all(tasks);
+  }
+
+  private async simulateProgress(p: UploadProgress) {
+    p.progress = 0;
+    while (p.progress < 100) {
+      // small delay
+      await this.delay(70 + Math.random() * 150);
+      p.progress = Math.min(100, p.progress + Math.round(6 + Math.random() * 22));
     }
+    // small delay at full
+    await this.delay(120);
   }
 
-  onImageUpload(event: any): void {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      const fileArray = Array.from(files) as File[];
-      
-      // Validate all files first
-      const validFiles: File[] = [];
-      for (const file of fileArray) {
-        const validation = this.uploadService.validateImage(file);
-        if (validation.valid) {
-          validFiles.push(file);
-        } else {
-          this.uploadError = validation.error || 'Invalid file';
-          return;
-        }
-      }
-
-      // Upload valid files
-      this.uploadError = '';
-      this.uploadSubscription = this.uploadService.uploadMultipleImages(validFiles).subscribe({
-        next: (progress: UploadProgress[]) => {
-          this.uploadProgress = progress;
-          this.isUploading = progress.some((p: UploadProgress) => p.status === 'uploading');
-        },
-        complete: () => {
-          // Add completed uploads to uploadedImages
-          this.uploadProgress.forEach((progress: UploadProgress) => {
-            if (progress.status === 'completed' && progress.url) {
-              this.uploadedImages.push({
-                name: progress.file.name,
-                url: progress.url,
-                file: progress.file
-              });
-            }
-          });
-          this.uploadService.clearUploadProgress();
-        },
-        error: (error: any) => {
-          this.uploadError = 'Upload failed. Please try again.';
-          console.error('Upload error:', error);
-        }
-      });
-    }
+  private delay(ms: number) {
+    return new Promise<void>(res => setTimeout(res, ms));
   }
 
-  validateImage(file: File): boolean {
-    const validation = this.uploadService.validateImage(file);
-    if (!validation.valid) {
-      this.uploadError = validation.error || 'Invalid file';
-    }
-    return validation.valid;
+  removeImage(index: number) {
+    const removed = this.uploadedImages.splice(index, 1)[0];
+    // clean any object URL
+    if (removed?.url) URL.revokeObjectURL(removed.url);
+    // also remove progress entry for that file
+    const fileName = removed?.name;
+    this.uploadProgress = this.uploadProgress.filter(p => p.file.name !== fileName);
   }
 
-  triggerFileInput(): void {
-    const fileInput = document.getElementById('images') as HTMLInputElement;
-    fileInput.click();
-  }
-
-  removeImage(index: number): void {
-    const image = this.uploadedImages[index];
-    if (image.url.startsWith('https://')) {
-      // If it's an uploaded image, delete it from server
-      this.uploadService.deleteImage(image.url).subscribe({
-        next: (success: boolean) => {
-          if (success) {
-            this.uploadedImages.splice(index, 1);
-          }
-        },
-        error: (error: any) => {
-          console.error('Error deleting image:', error);
-          // Still remove from local array
-          this.uploadedImages.splice(index, 1);
-        }
-      });
-    } else {
-      // If it's a local preview, just remove it
-      this.uploadedImages.splice(index, 1);
-    }
-  }
-
-  onSubmit(): void {
-    if (!this.validateForm()) {
+  // Form submit handler
+  async onSubmit() {
+    this.submitError = '';
+    if (!this.title?.trim() || !this.destination?.trim() || !this.category?.trim() || !this.story?.trim()) {
+      this.submitError = 'Please fill the required fields: Title, Destination, Category and Story.';
       return;
     }
-
-    this.isSubmitting = true;
-    this.submitError = '';
-
-    const postData = {
-      title: this.title,
-      content: this.story,
-      summary: this.tips,
-      author: 'Current User', // In real app, get from auth service
-      authorId: '1',
-      category: this.category,
-      tags: [this.destination.toLowerCase(), this.category.toLowerCase()],
-      status: 'draft' as const,
-      views: 0
-    };
-
-    this.postService.createPost(postData).subscribe({
-      next: (post: Post) => {
-        this.isSubmitting = false;
-        alert('Article saved successfully!');
-        this.resetForm();
-      },
-      error: (error: any) => {
-        this.isSubmitting = false;
-        this.submitError = 'Failed to save article. Please try again.';
-        console.error('Submit error:', error);
-      }
-    });
+    try {
+      this.isSubmitting = true;
+      // Ensure any remaining uploads finish (if still in progress)
+      await this.simulateAllUploads();
+      // Prepare payload (replace with real API call)
+      const payload = {
+        title: this.title,
+        destination: this.destination,
+        category: this.category,
+        story: this.story,
+        tips: this.tips,
+        images: this.uploadedImages.map(i => i.file?.name ?? i.name)
+      };
+      console.log('Submitting:', payload);
+      // simulate network delay
+      await this.delay(800);
+      alert('Published (simulated)! 🎉');
+      // Optional: reset form
+      this.resetForm();
+    } catch (err) {
+      console.error(err);
+      this.submitError = 'Publish failed. Try again.';
+    } finally {
+      this.isSubmitting = false;
+    }
   }
 
-  private validateForm(): boolean {
-    if (!this.title || !this.destination || !this.category || !this.story) {
-      this.submitError = 'Please fill in all required fields';
-      return false;
-    }
-
-    if (this.story.length < 100) {
-      this.submitError = 'Your travel story must be at least 100 characters long';
-      return false;
-    }
-
-    return true;
-  }
-
-  private resetForm(): void {
+  resetForm() {
     this.title = '';
     this.destination = '';
     this.category = '';
     this.story = '';
     this.tips = '';
+    // revoke URLs
+    this.uploadedImages.forEach(i => i.url && URL.revokeObjectURL(i.url));
     this.uploadedImages = [];
-    this.uploadError = '';
+    this.uploadProgress = [];
     this.submitError = '';
+    this.uploadError = '';
   }
 }

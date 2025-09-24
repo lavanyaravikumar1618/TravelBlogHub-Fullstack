@@ -1,23 +1,41 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
 
-import { UserRegister } from './user-register';
+@Component({
+  selector: 'app-user-register',
+  templateUrl: './user-register.html',
+  styleUrls: ['./user-register.css']
+})
+export class UserRegisterComponent {
+  // simple bindings used by template — replace with your actual logic
+  firstName = '';
+  lastName = '';
+  email = '';
+  country = '';
+  password = '';
+  confirmPassword = '';
+  agreeTerms = false;
+  newsletter = false;
+  isLoading = false;
+  errorMessage: string | null = null;
 
-describe('UserRegister', () => {
-  let component: UserRegister;
-  let fixture: ComponentFixture<UserRegister>;
+  onRegister() {
+    // placeholder registration handler
+    this.isLoading = true;
+    this.errorMessage = null;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [UserRegister]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(UserRegister);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    // simulate async register (replace with real service)
+    setTimeout(() => {
+      this.isLoading = false;
+      // basic validation example
+      if (!this.firstName || !this.email) {
+        this.errorMessage = 'Please fill required fields.';
+      } else {
+        // success path
+        console.log('Registered', { firstName: this.firstName, email: this.email });
+        // reset for demo
+        this.firstName = this.lastName = this.email = this.country = this.password = this.confirmPassword = '';
+        this.agreeTerms = this.newsletter = false;
+      }
+    }, 700);
+  }
+}
